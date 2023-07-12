@@ -1,11 +1,13 @@
 package com.nro.footballmanager.service;
 
 import com.nro.footballmanager.entity.Game;
+import com.nro.footballmanager.entity.dto.GameDTO;
 import com.nro.footballmanager.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameServiceImpl implements GameService{
@@ -19,44 +21,24 @@ public class GameServiceImpl implements GameService{
     }
 
     @Override
-    public List<Game> fetchGamesList(){
+    public Optional<Game> getById(Long gameId) {
+        return gameRepository.findById(gameId);
+    }
+
+    @Override
+    public List<Game> findAll(){
         return gameRepository.findAll();
     }
 
     @Override
-    public Game updateGame(Game game, Long gameId){
-
-        Game gameDB = gameRepository.findById(gameId).get();
-
-        if(game.getTeam1() != null){
-            gameDB.setTeam1(game.getTeam1());
-        }
-
-        if(game.getTeam2() != null){
-            gameDB.setTeam2(game.getTeam2());
-        }
-
-        if(game.getResult() != null){
-            gameDB.setResult(game.getResult());
-        }
-
-        if(game.getStadium() != null){
-            gameDB.setStadium(game.getStadium());
-        }
-
-        if(game.getStartHour() != null){
-            gameDB.setStartHour(game.getStartHour());
-        }
-
-        if(game.getDate() != null){
-            gameDB.setDate(game.getDate());
-        }
-
-        return gameRepository.save(gameDB);
+    public Game updateGame(Long gameId, GameDTO gameDTO){
+        Game game = GameDTO.toEntity(gameDTO);
+        game.setId(gameId);
+        return gameRepository.save(game);
     }
 
     @Override
-    public void deleteGame(Long gameId){
+    public void deleteGameById(Long gameId){
         gameRepository.deleteById(gameId);
     }
 }

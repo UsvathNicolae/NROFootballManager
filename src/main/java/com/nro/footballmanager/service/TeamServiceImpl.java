@@ -1,60 +1,44 @@
 package com.nro.footballmanager.service;
 
 import com.nro.footballmanager.entity.Team;
-import com.nro.footballmanager.repository.PlayerRepository;
+import com.nro.footballmanager.entity.dto.TeamDTO;
 import com.nro.footballmanager.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeamServiceImpl implements TeamService{
 
     @Autowired
     private TeamRepository teamRepository;
+
     @Override
     public Team saveTeam(Team team){
         return teamRepository.save(team);
     }
 
     @Override
-    public List<Team> fetchTeamsList(){
+    public Optional<Team> getById(Long teamId){
+        return teamRepository.findById(teamId);
+    }
+
+    @Override
+    public List<Team> findAll(){
         return teamRepository.findAll();
     }
 
     @Override
-    public Team updateTeam(Team team, Long id){
-        Team teamDB = teamRepository.findById(id).get();
-
-        if(team.getName() != null){
-            teamDB.setName(team.getName());
-        }
-
-        if(team.getGoalsScored() >= 0){
-            teamDB.setGoalsScored(team.getGoalsScored());
-        }
-
-        if(team.getGoalsReceived() >= 0){
-            teamDB.setGoalsReceived(team.getGoalsReceived());
-        }
-
-        if(team.getVictories() >= 0){
-            teamDB.setVictories(team.getVictories());
-        }
-
-        if(team.getDefeats() >= 0){
-            teamDB.setDefeats(team.getDefeats());
-        }
-
-        if(team.getDraws() >= 0){
-            teamDB.setDraws(team.getDraws());
-        }
-        return teamRepository.save(teamDB);
+    public Team updateTeam(Long teamId, TeamDTO teamDTO){
+        Team team = TeamDTO.toEntity(teamDTO);
+        team.setId(teamId);
+        return teamRepository.save(team);
     }
 
     @Override
-    public void deleteTeam(Long id){
+    public void deleteTeamById(Long id){
         teamRepository.deleteById(id);
     }
 }

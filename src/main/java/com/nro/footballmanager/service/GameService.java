@@ -1,15 +1,19 @@
 package com.nro.footballmanager.service;
 
 import com.nro.footballmanager.entity.Game;
+import com.nro.footballmanager.entity.dto.GameDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameService {
     Game saveGame(Game game);
 
-    List<Game> fetchGamesList();
+    Optional<Game> getById(Long gameId);
 
-    Game updateGame(Game game, Long gameId);
+    List<Game> findAll();
 
-    void deleteGame(Long gameId);
+    Game updateGame(Long gameId, GameDTO gameDTO);
+
+    void deleteGameById(Long gameId);
 }

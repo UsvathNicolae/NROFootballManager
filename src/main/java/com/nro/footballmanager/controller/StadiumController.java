@@ -1,38 +1,47 @@
 package com.nro.footballmanager.controller;
 
 import com.nro.footballmanager.entity.Stadium;
+import com.nro.footballmanager.entity.dto.StadiumDTO;
 import com.nro.footballmanager.service.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/stadium")
+@RequestMapping("/stadiums")
 public class StadiumController {
 
     @Autowired
     private StadiumServiceImpl stadiumService;
 
-    @PostMapping("./")
-    public Stadium saveStadium(@Validated @RequestBody Stadium stadium) {
-        return stadiumService.saveStadium(stadium);
+    @GetMapping("/")
+    public ResponseEntity<List<Stadium>> getAllStadiums() {
+        return new ResponseEntity<>(stadiumService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("./")
-    public List<Stadium> fetchStadiumsList() {
-        return stadiumService.fetchStadiumsList();
+    @PostMapping("/")
+    public ResponseEntity<Stadium> saveStadium(@Validated @RequestBody Stadium stadium) {
+        return new ResponseEntity<>(stadiumService.saveStadium(stadium), HttpStatus.CREATED);
     }
 
-    @PutMapping("./{id}")
-    public Stadium updateStadium(@RequestBody Stadium stadium, @PathVariable("id") Long stadiumId){
-        return stadiumService.updateStadium(stadium, stadiumId);
+    @PutMapping("/{id}")
+    public  ResponseEntity<StadiumDTO> updateStadium(@RequestBody StadiumDTO stadiumDTO, @PathVariable("id") Long stadiumId){
+        if (stadiumService.getById(stadiumId).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(StadiumDTO.fromEntity(stadiumService.updateStadium(stadiumId,stadiumDTO)), HttpStatus.OK);
     }
 
-    @DeleteMapping("./{id}")
-    public String deleteStadium(@PathVariable("id") Long stadiumId){
-        stadiumService.deleteStadium(stadiumId);
-        return "Stadium deleted successfully";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteStadium(@PathVariable("id") Long stadiumId){
+        if(stadiumService.getById(stadiumId).isPresent()){
+            stadiumService.deleteStadiumById(stadiumId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

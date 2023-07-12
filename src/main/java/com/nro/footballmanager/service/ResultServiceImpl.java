@@ -1,12 +1,13 @@
 package com.nro.footballmanager.service;
 
 import com.nro.footballmanager.entity.Result;
-import com.nro.footballmanager.entity.Stadium;
+import com.nro.footballmanager.entity.dto.ResultDTO;
 import com.nro.footballmanager.repository.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResultServiceImpl implements ResultService{
@@ -19,31 +20,24 @@ public class ResultServiceImpl implements ResultService{
     }
 
     @Override
-    public List<Result> fetchResultsList(){
+    public Optional<Result> getById(Long resultId){
+        return resultRepository.findById(resultId);
+    }
+
+    @Override
+    public List<Result> findAll(){
         return resultRepository.findAll();
     }
 
     @Override
-    public Result updateResult(Result result, Long resultId){
-        Result resultDB = resultRepository.findById(resultId).get();
-
-        if(result.getGoalsTeamOne() >= 0){
-            resultDB.setGoalsTeamOne(result.getGoalsTeamOne());
-        }
-
-        if(result.getGoalsTeamTwo() >= 0){
-            resultDB.setGoalsTeamTwo(result.getGoalsTeamTwo());
-        }
-
-        if(result.getGame() != null ){
-            resultDB.setGame(result.getGame());
-        }
-
-        return resultRepository.save(resultDB);
+    public Result updateResult(Long resultId, ResultDTO resultDTO ){
+       Result result = ResultDTO.toEntity(resultDTO);
+       result.setId(resultId);
+       return resultRepository.save(result);
     }
 
     @Override
-    public void deleteResult(Long resultId){
+    public void deleteResultById(Long resultId){
         resultRepository.deleteById(resultId);
     }
 }
