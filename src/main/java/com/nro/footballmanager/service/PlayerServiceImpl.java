@@ -3,6 +3,7 @@ package com.nro.footballmanager.service;
 import com.nro.footballmanager.entity.Player;
 import com.nro.footballmanager.entity.dto.PlayerDTO;
 import com.nro.footballmanager.repository.PlayerRepository;
+import com.nro.footballmanager.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Override
     public Player savePlayer(Player player){
@@ -30,6 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
     public Player updatePlayer(Long playerId, PlayerDTO playerDTO){
         Player player = PlayerDTO.toEntity(playerDTO);
         player.setId(playerId);
+        player.setTeam(teamRepository.findById(playerDTO.getTeamId()).get());
         return playerRepository.save(player);
     }
 

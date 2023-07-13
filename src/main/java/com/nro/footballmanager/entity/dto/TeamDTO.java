@@ -25,12 +25,6 @@ public class TeamDTO {
 
     private int draws;
 
-    private List<Long> players_ids;
-
-    private List<Long> gamesPlayedAsTeamOne;
-
-    private List<Long> gamesPlayedAsTeamTwo;
-
     public static TeamDTO fromEntity(Team team) {
         TeamDTO teamDTO = new TeamDTO();
 
@@ -41,19 +35,19 @@ public class TeamDTO {
         teamDTO.setDefeats(team.getDefeats());
         teamDTO.setDraws(team.getDraws());
 
-        teamDTO.setPlayers_ids(team.getPlayers()
-                .stream()
-                .map(Player::getId)
-                .collect(Collectors.toList()));
-
-        teamDTO.setGamesPlayedAsTeamOne(team.getGamesPlayedAsTeamOne()
-                .stream()
-                .map(Game::getId)
-                .collect(Collectors.toList()));
-
-        teamDTO.setGamesPlayedAsTeamTwo(team.getGamesPlayedAsTeamTwo()
-                .stream().map(Game::getId)
-                .collect(Collectors.toList()));
+//        teamDTO.setPlayers_ids(team.getPlayers()
+//                .stream()
+//                .map(Player::getId)
+//                .collect(Collectors.toList()));
+//
+//        teamDTO.setGamesPlayedAsTeamOne(team.getGamesPlayedAsTeamOne()
+//                .stream()
+//                .map(Game::getId)
+//                .collect(Collectors.toList()));
+//
+//        teamDTO.setGamesPlayedAsTeamTwo(team.getGamesPlayedAsTeamTwo()
+//                .stream().map(Game::getId)
+//                .collect(Collectors.toList()));
 
         return teamDTO;
     }
@@ -68,14 +62,14 @@ public class TeamDTO {
         team.setDefeats(teamDTO.getDefeats());
         team.setDraws(teamDTO.getDraws());
 
-        IntStream.range(0, teamDTO.getPlayers_ids().size())
-                .forEach(i -> team.getPlayers().get(i).setId(teamDTO.getPlayers_ids().get(i)));
-
-        IntStream.range(0, teamDTO.getGamesPlayedAsTeamOne().size())
-                .forEach(i -> team.getGamesPlayedAsTeamOne().get(i).setId(teamDTO.gamesPlayedAsTeamOne.get(i)));
-
-        IntStream.range(0, teamDTO.getGamesPlayedAsTeamTwo().size())
-                .forEach(i -> team.getGamesPlayedAsTeamTwo().get(i).setId(teamDTO.getGamesPlayedAsTeamTwo().get(i)));
+//        IntStream.range(0, teamDTO.getPlayers_ids().size())
+//                .forEach(i -> team.getPlayers().get(i).setId(teamDTO.getPlayers_ids().get(i)));
+//
+//        IntStream.range(0, teamDTO.getGamesPlayedAsTeamOne().size())
+//                .forEach(i -> team.getGamesPlayedAsTeamOne().get(i).setId(teamDTO.gamesPlayedAsTeamOne.get(i)));
+//
+//        IntStream.range(0, teamDTO.getGamesPlayedAsTeamTwo().size())
+//                .forEach(i -> team.getGamesPlayedAsTeamTwo().get(i).setId(teamDTO.getGamesPlayedAsTeamTwo().get(i)));
 
         return team;
     }

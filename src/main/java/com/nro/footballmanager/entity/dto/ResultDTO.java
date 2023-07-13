@@ -11,7 +11,7 @@ public class ResultDTO{
 
     private int goalsTeamTwo;
 
-    private Long game_id;
+//    private Long game_id;
 
     public static ResultDTO fromEntity(Result result){
         ResultDTO resultDTO = new ResultDTO();
@@ -19,7 +19,7 @@ public class ResultDTO{
         resultDTO.setGoalsTeamOne(result.getGoalsTeamOne());
         resultDTO.setGoalsTeamTwo(result.getGoalsTeamTwo());
 
-        resultDTO.setGame_id(result.getGame().getId());
+//        resultDTO.setGame_id(result.getGame().getId());
 
         return resultDTO;
     }
@@ -29,7 +29,7 @@ public class ResultDTO{
 
         result.setGoalsTeamOne(resultDTO.getGoalsTeamOne());
         result.setGoalsTeamTwo(resultDTO.getGoalsTeamTwo());
-        result.getGame().setId(resultDTO.getGame_id());
+//        result.getGame().setId(resultDTO.getGame_id());
 
         return result;
     }

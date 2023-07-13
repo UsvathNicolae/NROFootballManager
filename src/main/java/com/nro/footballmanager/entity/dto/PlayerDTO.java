@@ -19,7 +19,9 @@ public class PlayerDTO {
         playerDTO.setName(player.getName());
         playerDTO.setGoalsScored(player.getGoalsScored());
         playerDTO.setRole(player.getRole());
-        playerDTO.setTeamId(player.getTeam().getId());
+        if (player.getTeam() != null) {
+            playerDTO.setTeamId(player.getTeam().getId());
+        }
 
         return playerDTO;
     }
@@ -30,7 +32,6 @@ public class PlayerDTO {
         player.setName(playerDTO.getName());
         player.setGoalsScored(playerDTO.getGoalsScored());
         player.setRole(playerDTO.getRole());
-        player.getTeam().setId(playerDTO.getTeamId());
 
         return player;
     }

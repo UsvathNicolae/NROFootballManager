@@ -19,6 +19,6 @@ public class Stadium {
     @Column
     private String location;
 
-    @OneToMany(mappedBy = "stadium")
-    private List<Game> gamesOnStadium;
+//    @OneToMany(mappedBy = "stadium")
+//    private List<Game> gamesOnStadium;
 }

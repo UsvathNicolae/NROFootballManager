@@ -27,12 +27,12 @@ public class StadiumDTO {
         stadiumDTO.setName(stadium.getName());
         stadiumDTO.setLocation(stadium.getLocation());
 
-        List<Long> gamesOnStadiumList = stadium.getGamesOnStadium()
-                .stream()
-                .map(Game::getId)
-                .collect(Collectors.toList());
+//        List<Long> gamesOnStadiumList = stadium.getGamesOnStadium()
+//                .stream()
+//                .map(Game::getId)
+//                .collect(Collectors.toList());
+//        stadiumDTO.setGamesOnStadium(gamesOnStadiumList);
 
-        stadiumDTO.setGamesOnStadium(gamesOnStadiumList);
         return stadiumDTO;
     }
 
@@ -42,8 +42,8 @@ public class StadiumDTO {
         stadium.setName(stadiumDTO.getName());
         stadium.setLocation(stadiumDTO.getLocation());
 
-        IntStream.range(0, stadium.getGamesOnStadium().size())
-                .forEach(i -> stadium.getGamesOnStadium().get(i).setId(stadiumDTO.getGamesOnStadium().get(i)));
+//        IntStream.range(0, stadium.getGamesOnStadium().size())
+//                .forEach(i -> stadium.getGamesOnStadium().get(i).setId(stadiumDTO.getGamesOnStadium().get(i)));
 
         return stadium;
     }

@@ -1,10 +1,10 @@
 package com.nro.footballmanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -22,15 +22,13 @@ public class Game {
     @JoinColumn(name = "team_two_id")
     private Team team2;
 
+    @Column
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private LocalDateTime datetime;
+
     @ManyToOne
     @JoinColumn(name = "stadium_id")
     private Stadium stadium;
-
-    @Column
-    private Time startHour;
-
-    @Column
-    private Date date;
 
     @OneToOne
     @JoinColumn(name = "result_id")

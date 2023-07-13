@@ -17,6 +17,6 @@ public class Result {
     @Column
     private int goalsTeamTwo;
 
-    @OneToOne(mappedBy = "result")
-    private Game game;
+//    @OneToOne(mappedBy = "result")
+//    private Game game;
 }
