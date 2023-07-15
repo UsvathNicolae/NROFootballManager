@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teams Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+    </script>
+    <link rel="stylesheet" href="style/teamsPage.css">
+</head>
+<body onload="getTeams()">
+<div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="teamsPage.html">Teams</a>
+    <a href="playersPage.html">Players</a>
+    <a href="gamesPage.html">Games</a>
+    <a href="stadiumsPage.html">Stadiums</a>
+</div>
+    <button class="button" id="createButton">Create</button>
+    <div id="addTeamModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modalHeaderText">Add a team</h2>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Team name:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="victories">Victories:</label>
+                        <input type="number" id="victories" name="victories" value=0>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="draws">Draws:</label>
+                        <input type="number" id="draws" name="draws" value=0>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="defeats">Defeats:</label>
+                        <input type="number" id="defeats" name="defeats" value=0>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="goalsScored">Goals scored:</label>
+                        <input type="number" id="goalsScored" name="goalsScored" value=0>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="goalsReceived">Goals taken:</label>
+                        <input type="number" id="goalsReceived" name="goalsReceived" value=0>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="button" id = "addTeamButton" >Add team</button>
+            </div>
+        </div>
+
+    </div>
+    <table id="teamsTable">
+        <tr>
+            <th>Name</th>
+            <th>Victories</th>
+            <th>Draws</th>
+            <th>Defeats</th>
+            <th>Goals scored</th>
+            <th>Goals taken</th>
+            <th>Actions</th>
+        </tr>
+
+    </table>
+
+    <script src="controller/teamPageController.js"></script>
+</body>
+</html>

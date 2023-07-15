@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Page</title>
+    <link rel="stylesheet" href="style/playersPage.css">
+</head>
+<body onload="getPlayers()">
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="teamsPage.html">Teams</a>
+        <a href="playersPage.html">Players</a>
+        <a href="gamesPage.html">Games</a>
+        <a href="stadiumsPage.html">Stadiums</a>
+    </div>
+    <button class="button" id="createButton">Create</button>
+    <div id="addPlayerModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Add a player</h2>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Player name:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="goalsScored">Goals scored:</label>
+                        <input type="number" id="goalsScored" name="goalsScored" value=0>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <input type="text" id="role" name="Role">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="team">Team:</label>
+                        <select id="team" name="cars">
+                            <option value="FCSB">FCSB</option>
+                            <option value="Poli">Poli</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="button" onclick="addPlayer()">Add player</button>
+            </div>
+        </div>
+    </div>
+    <table id="playersTable">
+        <tr>
+            <th>Name</th>
+            <th>Goals scored</th>
+            <th>Role</th>
+            <th>Team</th>
+            <th>Actions</th>
+        </tr>
+
+    </table>
+
+    <script src="controller/playerPageController.js"></script>
+</body>
+</html>
