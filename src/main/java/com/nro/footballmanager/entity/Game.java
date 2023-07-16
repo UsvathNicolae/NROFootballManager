@@ -23,7 +23,7 @@ public class Game {
     private Team team2;
 
     @Column
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime datetime;
 
     @ManyToOne

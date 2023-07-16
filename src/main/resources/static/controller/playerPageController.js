@@ -1,5 +1,5 @@
-let basePlayersURL = "http://localhost:8090/players/";
-let teamsURL = "http://localhost:8090/players/";
+let playersURL = "http://localhost:8090/players/";
+let teamsURL = "http://localhost:8090/teams/";
 let allPlayers;
 let allTeams;
 
@@ -35,7 +35,7 @@ span.onclick = function() {
 
 //populating the table
 async function getPlayers(){
-    await fetch(basePlayersURL,{
+    await fetch(playersURL,{
         method: "GET"
     })
         .then((response) => response.json())
@@ -79,7 +79,7 @@ async function addPlayer(){
         team: (teamInput.value == null? null :  allTeams[teamInput.value])
     };
 
-    await fetch(basePlayersURL, {
+    await fetch(playersURL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -99,7 +99,7 @@ async function addPlayer(){
 
 // delete a player
 async function deletePlayer(id){
-    await fetch(basePlayersURL + id,{
+    await fetch(playersURL + id,{
         method:"DELETE"
     })
         .then((response) =>{
@@ -134,7 +134,7 @@ async function editPlayer( id){
         team: (teamInput==null? null :  allTeams[teamInput.value])
     };
 
-    await fetch(baseURL + id, {
+    await fetch(playersURL + id, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

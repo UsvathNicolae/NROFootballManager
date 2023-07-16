@@ -1,5 +1,5 @@
 let allTeams;
-let baseURL = "http://localhost:8090/teams/";
+let teamsURL = "http://localhost:8090/teams/";
 
 // Get the modal
 var modal = document.getElementById("addTeamModal");
@@ -41,7 +41,7 @@ window.onclick = function(event) {
 
 //populating the table
 async function getTeams(){
-    await fetch(baseURL,{
+    await fetch(teamsURL,{
         method: "GET"
     })
         .then((response) => response.json())
@@ -86,7 +86,7 @@ async function addTeam(){
         goalsReceived: parseInt(goalsReceivedInput.value)
     };
 
-    await fetch(baseURL, {
+    await fetch(teamsURL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -107,7 +107,7 @@ async function addTeam(){
 
 // delete a team
 async function deleteTeam(id){
-    await fetch(baseURL + id,{
+    await fetch(teamsURL + id,{
         method:"DELETE"
     })
         .then((response) =>{
@@ -149,7 +149,7 @@ async function editTeam(id){
         goalsReceived: parseInt(goalsReceivedInput.value)
     };
 
-    await fetch(baseURL + id, {
+    await fetch(teamsURL + id, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

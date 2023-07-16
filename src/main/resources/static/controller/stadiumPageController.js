@@ -1,5 +1,5 @@
 let allStadiums;
-let baseURL = "http://localhost:8090/stadiums/";
+let stadiumsURL = "http://localhost:8090/stadiums/";
 
 // Get the modal
 var modal = document.getElementById("addStadiumModal");
@@ -38,7 +38,7 @@ window.onclick = function(event) {
 
 // Populating the table
 async function getStadiums(){
-    await fetch(baseURL, {
+    await fetch(stadiumsURL, {
         method: "GET"
     })
         .then((response) => response.json())
@@ -72,7 +72,7 @@ async function addStadium(){
         location: locationInput.value
     };
 
-    await fetch(baseURL, {
+    await fetch(stadiumsURL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -92,7 +92,7 @@ async function addStadium(){
 
 // Delete a stadium
 async function deleteStadium(id){
-    await fetch(baseURL + id, {
+    await fetch(stadiumsURL + id, {
         method: "DELETE"
     })
         .then((response) => {
@@ -125,7 +125,7 @@ async function editStadium(id){
         location: locationInput.value
     };
 
-    await fetch(baseURL + id, {
+    await fetch(stadiumsURL + id, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
