@@ -2,9 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Stadiums Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style/styles.css">
 </head>
-<body>
-
+<body onload="getStadiums()" topmargin="0" leftmargin="0" rightmargin="0">
+<div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="teamsPage.html">Teams</a>
+    <a href="playersPage.html">Players</a>
+    <a href="gamesPage.html">Games</a>
+    <a class="currentPage" href="stadiumsPage.html">Stadiums</a>
+</div>
+<div class="content">
+    <button class="button" id="createButton">Create</button>
+    <div id="addStadiumModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modalHeaderText">Add a stadium</h2>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="stadiumName">Name:</label>
+                        <input type="text" id="stadiumName" name="stadiumName">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="stadiumLocation">Location:</label>
+                        <input type="text" id="stadiumLocation" name="stadiumLocation">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="button" id="addStadiumButton">Add stadium</button>
+            </div>
+        </div>
+    </div>
+    <table id="stadiumsTable">
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+</div>
+<script src="controller/stadiumPageController.js"></script>
 </body>
 </html>
