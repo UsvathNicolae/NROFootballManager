@@ -60,6 +60,7 @@ async function getTeams(){
                     '<td>' + object.defeats + '</td>'+
                     '<td>' + object.goalsScored + '</td>' +
                     '<td>' + object.goalsReceived + '</td>' +
+                    '<td>' + (object.victories * 3 + object.draws) + '</td>' +
                     '<button class="button" onclick="openEdit(' + object.id + ','+ rowNo + ')">' + "Edit" + '</button>' +
                     '<button class="buttonRed" onclick="deleteTeam(' + object.id + ')">' + "Delete" + '</button>';
                 table.appendChild(tr);

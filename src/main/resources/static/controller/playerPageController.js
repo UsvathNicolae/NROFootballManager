@@ -60,6 +60,14 @@ async function getPlayers(){
         .then((response) => response.json())
         .then((json) => {
             allTeams = json;
+            let select = document.getElementById("teamName");
+            json.forEach(function (object){
+                let option = document.createElement("option");
+                // Set the value and text of the option
+                option.value = object.id;
+                option.text = object.name;
+                select.appendChild(option);
+            })
         })
 }
 
@@ -70,13 +78,13 @@ async function addPlayer(){
     let goalsScoredInput = document.getElementById("goalsScored");
     let roleInput = document.getElementById("role");
     let teamInput = document.getElementById("teamName")
-    console.log(teamInput.value)
-    console.log(allTeams)
     const playerData = {
         name: nameInput.value,
         goalsScored: parseInt(goalsScoredInput.value),
         role: roleInput.value,
-        team: (teamInput.value == null? null :  allTeams[teamInput.value])
+        team: (teamInput.value == null? null :  allTeams.find(function(obj) {
+            if(obj.id == teamInput.value) return obj;
+        }))
     };
 
     await fetch(playersURL, {
@@ -131,8 +139,9 @@ async function editPlayer( id){
         name: nameInput.value,
         goalsScored: parseInt(goalsScoredInput.value),
         role: roleInput.value,
-        team: (teamInput==null? null :  allTeams[teamInput.value])
+        team: teamInput.value
     };
+    console.log(playerData)
 
     await fetch(playersURL + id, {
         method: "PUT",
@@ -143,7 +152,6 @@ async function editPlayer( id){
     })
     modal.style.display = "none";
     await refreshTable()
-
 }
 
 async function refreshTable(){
