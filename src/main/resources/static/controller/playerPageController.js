@@ -1,7 +1,37 @@
 let basePlayersURL = "http://localhost:8090/players/";
-let baseTeamsURL = "http://localhost:8090/players/";
+let teamsURL = "http://localhost:8090/players/";
 let allPlayers;
-let teams;
+let allTeams;
+
+
+// Get the modal
+var modal = document.getElementById("addPlayerModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("createButton");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+    let addbtn = document.getElementById("addPlayerButton");
+    let head = document.getElementById("modalHeaderText");
+    addbtn.innerHTML = "Create";
+    addbtn.setAttribute("onclick", "addPlayer()");
+    head.innerHTML = "Add player";
+
+    document.getElementById("playerName").value = "";
+    document.getElementById("goalsScored").value = 0;
+    document.getElementById("role").value = "";
+    document.getElementById("teamName").value = "";
+
+    modal.style.display = "block";
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
 
 //populating the table
 async function getPlayers(){
@@ -11,45 +41,42 @@ async function getPlayers(){
         .then((response) => response.json())
         .then((json) => {
             allPlayers = json;
-            var table = document.getElementById('playersTable');
+            let table = document.getElementById('playersTable');
             json.forEach(function (object) {
-                console.log(object)
-                var tr = document.createElement('tr');
+                let rowNo = table.rows.length - 1;
+                let tr = document.createElement('tr');
                 tr.innerHTML = '<td>' + object.name + '</td>' +
                     '<td>' + object.goalsScored + '</td>' +
                     '<td>' + object.role + '</td>' +
-                    '<td>' + object["team"].name + '</td>' +
-                    '<button onclick="editPlayer(' + object.id + ')">' + "Edit" + '</button>' +
-                    '<button onclick="deletePlayer(' + object.id + ')">' + "Delete" + '</button>';
+                    '<td>' + (object.team != null ? object["team"].name : "") + '</td>' +
+                    '<button class="button" onclick="openEdit(' + object.id + ','+ rowNo + ')">' + "Edit" + '</button>' +
+                    '<button class="buttonRed" onclick="deletePlayer(' + object.id + ')">' + "Delete" + '</button>';
                 table.appendChild(tr);
             })
         });
-    await fetch(baseTeamsURL, {
+    await fetch(teamsURL, {
         method:"GET"
     })
         .then((response) => response.json())
         .then((json) => {
-            teams = json;
+            allTeams = json;
         })
 }
 
 //add a player
 async function addPlayer(){
 
-    var nameInput = document.getElementById("name");
-    var victoriesInput = document.getElementById("victories");
-    var drawsInput = document.getElementById("draws");
-    var defeatsInput = document.getElementById("defeats");
-    var goalsScoredInput = document.getElementById("goalsScored");
-    var goalsReceivedInput = document.getElementById("goalsReceived");
-
-    var playerData = {
+    let nameInput = document.getElementById("playerName");
+    let goalsScoredInput = document.getElementById("goalsScored");
+    let roleInput = document.getElementById("role");
+    let teamInput = document.getElementById("teamName")
+    console.log(teamInput.value)
+    console.log(allTeams)
+    const playerData = {
         name: nameInput.value,
-        victories: parseInt(victoriesInput.value),
-        draws: parseInt(drawsInput.value),
-        defeats: parseInt(defeatsInput.value),
         goalsScored: parseInt(goalsScoredInput.value),
-        goalsReceived: parseInt(goalsReceivedInput.value)
+        role: roleInput.value,
+        team: (teamInput.value == null? null :  allTeams[teamInput.value])
     };
 
     await fetch(basePlayersURL, {
@@ -66,7 +93,8 @@ async function addPlayer(){
             console.error(error);
         });
 
-    location.reload();
+    modal.style.display = "none";
+    await refreshTable()
 }
 
 // delete a player
@@ -76,34 +104,54 @@ async function deletePlayer(id){
     })
         .then((response) =>{
             console.log(response)})
-    location.reload();
-}
-async function editPlayer( id){
-    console.log("It works!" + id);
+    await refreshTable()
 }
 
-// Get the modal
-var modal = document.getElementById("addPlayerModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("createButton");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
+function openEdit( id, position){
     modal.style.display = "block";
-}
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+    let addbtn = document.getElementById("addPlayerButton");
+    addbtn.innerHTML = "Edit"
+    addbtn.setAttribute("onclick", "editPlayer(" + id + ")");
+    document.getElementById("modalHeaderText").innerHTML = "Edit player";
+
+    document.getElementById("playerName").value = allPlayers[position].name;
+    document.getElementById("goalsScored").value = allPlayers[position].goalsScored;
+    document.getElementById("role").value = allPlayers[position].role;
+    document.getElementById("teamName").value = allPlayers[position].team.name;
+ }
+async function editPlayer( id){
+
+    let nameInput = document.getElementById("playerName");
+    let goalsScoredInput = document.getElementById("goalsScored");
+    let roleInput = document.getElementById("role");
+    let teamInput = document.getElementById("teamName")
+
+    const playerData = {
+        name: nameInput.value,
+        goalsScored: parseInt(goalsScoredInput.value),
+        role: roleInput.value,
+        team: (teamInput==null? null :  allTeams[teamInput.value])
+    };
+
+    await fetch(baseURL + id, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(playerData)
+    })
     modal.style.display = "none";
+    await refreshTable()
+
 }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+async function refreshTable(){
+    let table = document.getElementById('playersTable');
+
+    while(table.rows.length !== 1){
+        document.getElementById('playersTable').deleteRow(1);
     }
+
+    await getPlayers();
 }

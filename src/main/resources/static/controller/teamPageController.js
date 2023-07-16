@@ -1,5 +1,44 @@
 let allTeams;
 let baseURL = "http://localhost:8090/teams/";
+
+// Get the modal
+var modal = document.getElementById("addTeamModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("createButton");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+    let addbtn = document.getElementById("addTeamButton");
+    let head = document.getElementById("modalHeaderText");
+    addbtn.innerHTML = "Create";
+    addbtn.setAttribute("onclick", "addTeam()");
+    head.innerHTML = "Add team";
+
+    document.getElementById("name").value = "";
+    document.getElementById("victories").value = 0;
+    document.getElementById("draws").value = 0;
+    document.getElementById("defeats").value = 0;
+    document.getElementById("goalsScored").value = 0;
+    document.getElementById("goalsReceived").value = 0;
+
+    modal.style.display = "block";
+}
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
 //populating the table
 async function getTeams(){
     await fetch(baseURL,{
@@ -21,8 +60,8 @@ async function getTeams(){
                     '<td>' + object.defeats + '</td>'+
                     '<td>' + object.goalsScored + '</td>' +
                     '<td>' + object.goalsReceived + '</td>' +
-                    '<button onclick="openEdit(' + object.id + ','+ rowNo + ')">' + "Edit" + '</button>' +
-                    '<button onclick="deleteTeam(' + object.id + ')">' + "Delete" + '</button>';
+                    '<button class="button" onclick="openEdit(' + object.id + ','+ rowNo + ')">' + "Edit" + '</button>' +
+                    '<button class="buttonRed" onclick="deleteTeam(' + object.id + ')">' + "Delete" + '</button>';
                 table.appendChild(tr);
             })
         });
@@ -31,12 +70,12 @@ async function getTeams(){
 
 //add a team
 async function addTeam(){
-    var nameInput = document.getElementById("name");
-    var victoriesInput = document.getElementById("victories");
-    var drawsInput = document.getElementById("draws");
-    var defeatsInput = document.getElementById("defeats");
-    var goalsScoredInput = document.getElementById("goalsScored");
-    var goalsReceivedInput = document.getElementById("goalsReceived");
+    let nameInput = document.getElementById("name");
+    let victoriesInput = document.getElementById("victories");
+    let drawsInput = document.getElementById("draws");
+    let defeatsInput = document.getElementById("defeats");
+    let goalsScoredInput = document.getElementById("goalsScored");
+    let goalsReceivedInput = document.getElementById("goalsReceived");
 
     const teamData = {
         name: nameInput.value,
@@ -61,19 +100,6 @@ async function addTeam(){
         console.error(error);
     });
 
-    let table = document.getElementById('teamsTable');
-
-
-    let tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + teamData.name + '</td>' +
-        '<td>' + teamData.victories + '</td>' +
-        '<td>' + teamData.draws + '</td>' +
-        '<td>' + teamData.defeats + '</td>'+
-        '<td>' + teamData.goalsScored + '</td>' +
-        '<td>' + teamData.goalsReceived + '</td>' +
-        '<button onclick="openEdit(' + teamData.id + ')">' + "Edit" + '</button>' +
-        '<button onclick="openEdit(' + object.id + ','+ rowNo + ')">' + "Delete" + '</button>';
-    table.appendChild(tr);
 
     modal.style.display = "none";
     await refreshTable()
@@ -95,7 +121,7 @@ function openEdit( id, position){
     let addbtn = document.getElementById("addTeamButton");
     addbtn.innerHTML = "Edit"
     addbtn.setAttribute("onclick", "editTeam(" + id + ")");
-    document.getElementById("modalHeaderText").innerHTML = "Edit player";
+    document.getElementById("modalHeaderText").innerHTML = "Edit team";
 
     document.getElementById("name").value = allTeams[position].name;
     document.getElementById("victories").value = allTeams[position].victories;
@@ -143,41 +169,4 @@ async function refreshTable(){
     }
 
     await getTeams();
-}
-// Get the modal
-var modal = document.getElementById("addTeamModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("createButton");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-    let addbtn = document.getElementById("addTeamButton");
-    let head = document.getElementById("modalHeaderText");
-    addbtn.innerHTML = "Create";
-    addbtn.setAttribute("onclick", "addTeam()");
-    head.innerHTML = "Add player";
-
-    document.getElementById("name").value = "";
-    document.getElementById("victories").value = 0;
-    document.getElementById("draws").value = 0;
-    document.getElementById("defeats").value = 0;
-    document.getElementById("goalsScored").value = 0;
-    document.getElementById("goalsReceived").value = 0;
-
-    modal.style.display = "block";
-}
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
 }

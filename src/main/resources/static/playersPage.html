@@ -2,54 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Player Page</title>
-    <link rel="stylesheet" href="style/playersPage.css">
+    <title>Players</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style/styles.css">
 </head>
-<body onload="getPlayers()">
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="teamsPage.html">Teams</a>
-        <a href="playersPage.html">Players</a>
-        <a href="gamesPage.html">Games</a>
-        <a href="stadiumsPage.html">Stadiums</a>
-    </div>
+<body onload="getPlayers()" topmargin="0" leftmargin="0" rightmargin="0">
+<div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="teamsPage.html">Teams</a>
+    <a class="currentPage" href="playersPage.html">Players</a>
+    <a href="gamesPage.html">Games</a>
+    <a href="stadiumsPage.html">Stadiums</a>
+</div>
+<div class="content">
     <button class="button" id="createButton">Create</button>
     <div id="addPlayerModal" class="modal">
-
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Add a player</h2>
+                <h2 id="modalHeaderText">Add a player</h2>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="name">Player name:</label>
-                        <input type="text" id="name" name="name">
+                        <label for="playerName">Name:</label>
+                        <input type="text" id="playerName" name="playerName">
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="goalsScored">Goals scored:</label>
-                        <input type="number" id="goalsScored" name="goalsScored" value=0>
+                        <input type="number" id="goalsScored" name="goalsScored" value="0">
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="role">Role:</label>
-                        <input type="text" id="role" name="Role">
+                        <select id="role" name="role">
+                            <option value="FORWARD">Forward</option>
+                            <option value="GOALKEEPER">Goalkeeper</option>
+                            <option value="MIDFIELDER">Midfielder</option>
+                            <option value="DEFENDER">Defender</option>
+                        </select>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="team">Team:</label>
-                        <select id="team" name="cars">
-                            <option value="FCSB">FCSB</option>
-                            <option value="Poli">Poli</option>
+                        <label for="teamName">Team:</label>
+                        <select id="teamName" name="team">
+                            <option value= null>No team</option>
                         </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="button" onclick="addPlayer()">Add player</button>
+                <button class="button" id="addPlayerButton">Add player</button>
             </div>
         </div>
     </div>
@@ -61,9 +66,8 @@
             <th>Team</th>
             <th>Actions</th>
         </tr>
-
     </table>
-
-    <script src="controller/playerPageController.js"></script>
+</div>
+<script src="controller/playerPageController.js"></script>
 </body>
 </html>
