@@ -60,7 +60,8 @@ async function getGames(){
             json.forEach(function (object) {
                 let rowNo = table.rows.length - 1;
                 let tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + object.team1.name + '</td>' +
+                tr.innerHTML = '<td>' + (rowNo + 1) + '</td>' +
+                    '<td>' + object.team1.name + '</td>' +
                     '<td>' + object.team2.name + '</td>' +
                     '<td>' + object.datetime.substring(0, 10) + '</td>' +
                     '<td>' + object.datetime.substring(11, 19) + '</td>' +
@@ -69,8 +70,8 @@ async function getGames(){
                     '<td>' + (object.result!= null ? object.result.goalsTeamTwo : "-")  + '</td>' +
                     '<td>' +
                     '<button class="button" onclick="openEdit(' + object.id + ',' + rowNo + ')">Edit</button>' +
-                    '<button class="buttonRed" onclick="deleteGame(' + object.id + ')">Delete</button>' + '</td>' +
-                    (object.result == null ? '<button class="button" onclick="playGame(' + object.id + ')">Play</button>' : "");
+                    '<button class="buttonRed" onclick="deleteGame(' + object.id + ')">Delete</button>' +
+                    (object.result == null ? '<button class="button" onclick="playGame(' + object.id + ')">Play</button>' : "") + '</td>';
 
                 table.appendChild(tr);
             })

@@ -54,7 +54,8 @@ async function getTeams(){
             json.forEach(function (object) {
                 let rowNo = table.rows.length - 1;
                 let tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + object.name + '</td>' +
+                tr.innerHTML = '<td>' + (rowNo + 1) + '</td>' +
+                    '<td>' + object.name + '</td>' +
                     '<td>' + object.victories + '</td>' +
                     '<td>' + object.draws + '</td>' +
                     '<td>' + object.defeats + '</td>'+

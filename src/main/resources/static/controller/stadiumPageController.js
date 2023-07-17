@@ -51,7 +51,8 @@ async function getStadiums(){
             json.forEach(function (object) {
                 let rowNo = table.rows.length - 1;
                 let tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + object.name + '</td>' +
+                tr.innerHTML = '<td>' + (rowNo + 1) + '</td>' +
+                    '<td>' + object.name + '</td>' +
                     '<td>' + object.location + '</td>' +
                     '<td>' +
                     '<button class="button" onclick="openEdit(' + object.id + ','+ rowNo + ')">Edit</button>' +

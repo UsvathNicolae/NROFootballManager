@@ -45,7 +45,8 @@ async function getPlayers(){
             json.forEach(function (object) {
                 let rowNo = table.rows.length - 1;
                 let tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + object.name + '</td>' +
+                tr.innerHTML = '<td>' + (rowNo + 1) + '</td>' +
+                    '<td>' + object.name + '</td>' +
                     '<td>' + object.goalsScored + '</td>' +
                     '<td>' + object.role + '</td>' +
                     '<td>' + (object.team != null ? object["team"].name : "") + '</td>' +
