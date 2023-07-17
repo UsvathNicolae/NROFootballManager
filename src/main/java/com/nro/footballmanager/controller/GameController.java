@@ -44,4 +44,12 @@ public class GameController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/getResult/{id}")
+    public ResponseEntity<Game> generateResult(@PathVariable("id") Long gameId) {
+        if (gameService.getById(gameId).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(gameService.generateResult(gameId), HttpStatus.OK);
+    }
 }

@@ -1,9 +1,12 @@
 let allGames
 let allTeams;
 let allResults;
+let allStadiums;
+
 let gamesURL = "http://localhost:8090/games/";
 let teamsURL = "http://localhost:8090/teams/";
 let resultsURL = "http://localhost:8090/results/";
+let stadiumsURL = "http://localhost:8090/stadiums/";
 
 // Get the modal
 var modal = document.getElementById("addGameModal");
@@ -27,8 +30,6 @@ btn.onclick = function() {
     document.getElementById("date").value = "";
     document.getElementById("hour").value = "";
     document.getElementById("stadium").value = "";
-    document.getElementById("goalsTeam1").value = 0;
-    document.getElementById("goalsTeam2").value = 0;
 
     modal.style.display = "block";
 }
@@ -61,15 +62,16 @@ async function getGames(){
                 let tr = document.createElement('tr');
                 tr.innerHTML = '<td>' + object.team1.name + '</td>' +
                     '<td>' + object.team2.name + '</td>' +
-                     '<td>' + object.datetime.substring(0, 10) + '</td>' +
-                     '<td>' + object.datetime.substring(11, 20) + '</td>' +
+                    '<td>' + object.datetime.substring(0, 10) + '</td>' +
+                    '<td>' + object.datetime.substring(11, 19) + '</td>' +
                     '<td>' + object.stadium.name + '</td>' +
                     '<td>' + (object.result!= null ? object.result.goalsTeamOne : "-")  + '</td>' +
                     '<td>' + (object.result!= null ? object.result.goalsTeamTwo : "-")  + '</td>' +
                     '<td>' +
                     '<button class="button" onclick="openEdit(' + object.id + ',' + rowNo + ')">Edit</button>' +
-                    '<button class="buttonRed" onclick="deleteGame(' + object.id + ')">Delete</button>' +
-                    '</td>';
+                    '<button class="buttonRed" onclick="deleteGame(' + object.id + ')">Delete</button>' + '</td>' +
+                    (object.result == null ? '<button class="button" onclick="playGame(' + object.id + ')">Play</button>' : "");
+
                 table.appendChild(tr);
             })
         });
@@ -80,15 +82,46 @@ async function getGames(){
         .then((response) => response.json())
         .then((json) => {
             allTeams = json;
+            let selectTeam1 = document.getElementById("team1");
+            let selectTeam2 = document.getElementById("team2");
+            json.forEach(function (object){
+                let option = document.createElement("option");
+                // Set the value and text of the option
+                option.value = object.id;
+                option.text = object.name;
+                selectTeam1.appendChild(option);
+            })
+            json.forEach(function (object){
+                let option = document.createElement("option");
+                // Set the value and text of the option
+                option.value = object.id;
+                option.text = object.name;
+                selectTeam2.appendChild(option);
+            })
         })
 
-    await fetch(resultsURL, {
+    await fetch(stadiumsURL, {
         method:"GET"
     })
         .then((response) => response.json())
         .then((json) => {
-            allResults = json;
+            allStadiums = json;
+            let selectStadium = document.getElementById("stadium");
+            json.forEach(function (object){
+                let option = document.createElement("option");
+                // Set the value and text of the option
+                option.value = object.id;
+                option.text = object.name;
+                selectStadium.appendChild(option);
+            })
         })
+    // await fetch(resultsURL, {
+    //     method:"GET"
+    // })
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //         allResults = json;
+    //     })
 }
 
 // Add a game
@@ -98,18 +131,16 @@ async function addGame(){
     let dateInput = document.getElementById("date");
     let hourInput = document.getElementById("hour");
     let stadiumInput = document.getElementById("stadium");
-    let goalsTeam1Input = document.getElementById("goalsTeam1");
-    let goalsTeam2Input = document.getElementById("goalsTeam2");
 
     const gameData = {
-        team1: team1Input.value,
-        team2: team2Input.value,
-        date: dateInput.value,
-        hour: hourInput.value,
-        stadium: stadiumInput.value,
-        goalsTeam1: parseInt(goalsTeam1Input.value),
-        goalsTeam2: parseInt(goalsTeam2Input.value)
+        team1: allTeams.find(team => team.id == team1Input.value),
+        team2: allTeams.find(team => team.id == team2Input.value),
+        datetime: dateInput.value + 'T' + hourInput.value + ':00',
+        stadium: allTeams.find(stadium => stadium.id == stadiumInput.value),
+        result:null
     };
+
+    console.log(gameData)
 
     await fetch(gamesURL, {
         method: "POST",
@@ -150,13 +181,11 @@ function openEdit(id, position){
     addbtn.setAttribute("onclick", "editGame(" + id + ")");
     document.getElementById("modalHeaderText").innerHTML = "Edit game";
 
-    document.getElementById("team1").value = allGames[position].team1.name;
-    document.getElementById("team2").value = allGames[position].team2.name;
+    document.getElementById("team1").value = allGames[position].team1.id;
+    document.getElementById("team2").value = allGames[position].team2.id;
     document.getElementById("date").value = allGames[position].dateTime;
     document.getElementById("hour").value = allGames[position].dateTime;
-    document.getElementById("stadium").value = allGames[position].stadium.name;
-    document.getElementById("goalsTeam1").value = allGames[position].result.goalsTeam1;
-    document.getElementById("goalsTeam2").value = allGames[position].result.goalsTeam2;
+    document.getElementById("stadium").value = allGames[position].stadium.id;
 }
 
 // Edit a game
@@ -166,18 +195,14 @@ async function editGame(id){
     let dateInput = document.getElementById("date");
     let hourInput = document.getElementById("hour");
     let stadiumInput = document.getElementById("stadium");
-    let goalsTeam1Input = document.getElementById("goalsTeam1");
-    let goalsTeam2Input = document.getElementById("goalsTeam2");
 
     let gameData = {
         team1: team1Input.value,
         team2: team2Input.value,
-        date: dateInput.value,
-        hour: hourInput.value,
+        datetime:dateInput.value + 'T' + hourInput.value + ':00',
         stadium: stadiumInput.value,
-        goalsTeam1: parseInt(goalsTeam1Input.value),
-        goalsTeam2: parseInt(goalsTeam2Input.value)
     };
+    console.log(gameData)
 
     await fetch(gamesURL + id, {
         method: "PUT",
@@ -189,6 +214,15 @@ async function editGame(id){
 
     modal.style.display = "none";
     await refreshTable();
+}
+
+async function playGame(id) {
+    await fetch(gamesURL + "getResult/" + id, {
+        method: "GET"
+    })
+
+    await refreshTable();
+
 }
 
 // Refresh the table after CRUD operations
