@@ -126,7 +126,10 @@ function openEdit( id, position){
     document.getElementById("playerName").value = allPlayers[position].name;
     document.getElementById("goalsScored").value = allPlayers[position].goalsScored;
     document.getElementById("role").value = allPlayers[position].role;
-    document.getElementById("teamName").value = allPlayers[position].team.name;
+    allPlayers[position].team != null?
+        document.getElementById("teamName").value = allPlayers[position].team.id
+        :
+        document.getElementById("teamName").value = null
  }
 async function editPlayer( id){
 
@@ -139,7 +142,7 @@ async function editPlayer( id){
         name: nameInput.value,
         goalsScored: parseInt(goalsScoredInput.value),
         role: roleInput.value,
-        team: teamInput.value
+        teamId: teamInput.value
     };
     console.log(playerData)
 

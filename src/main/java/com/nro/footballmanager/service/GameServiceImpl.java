@@ -1,6 +1,7 @@
 package com.nro.footballmanager.service;
 
 import com.nro.footballmanager.entity.Game;
+import com.nro.footballmanager.entity.Player;
 import com.nro.footballmanager.entity.Result;
 import com.nro.footballmanager.entity.Team;
 import com.nro.footballmanager.entity.dto.GameDTO;
@@ -25,6 +26,9 @@ public class GameServiceImpl implements GameService{
 
     @Autowired
     private ResultServiceImpl resultService;
+
+    @Autowired
+    private PlayerServiceImpl playerService;
 
     @Override
     public Game saveGame(Game game){
@@ -59,8 +63,8 @@ public class GameServiceImpl implements GameService{
         if(game.getResult() == null){
             Result result = new Result();
             Random random = new Random();
-            result.setGoalsTeamOne(random.nextInt(5) + 1);
-            result.setGoalsTeamTwo(random.nextInt(5) + 1);
+            result.setGoalsTeamOne(random.nextInt(6) );
+            result.setGoalsTeamTwo(random.nextInt(6) );
 
             Team team1 = teamService.getById(game.getTeam1().getId()).get();
             team1.setGoalsScored(team1.getGoalsScored() + result.getGoalsTeamOne());
@@ -69,6 +73,28 @@ public class GameServiceImpl implements GameService{
             Team team2 = teamService.getById(game.getTeam2().getId()).get();
             team2.setGoalsScored(team2.getGoalsScored() + result.getGoalsTeamTwo());
             team2.setGoalsReceived(team2.getGoalsReceived() + result.getGoalsTeamOne());
+
+            List<Player> players = playerService.findAllByTeamId(team1.getId());
+            if(players.size()>0){
+                int i = 0;
+                while(i < result.getGoalsTeamOne()){
+                    int playerWhoScored = random.nextInt(players.size());
+                    players.get(playerWhoScored).setGoalsScored(players.get(playerWhoScored).getGoalsScored() + 1);
+                    playerService.savePlayer(players.get(playerWhoScored));
+                    i++;
+                }
+            }
+
+            players = playerService.findAllByTeamId(team2.getId());
+            if(players.size()>0){
+                int i=0;
+                while(i < result.getGoalsTeamTwo()){
+                    int playerWhoScored = random.nextInt(players.size());
+                    players.get(playerWhoScored).setGoalsScored(players.get(playerWhoScored).getGoalsScored() + 1);
+                    playerService.savePlayer(players.get(playerWhoScored));
+                    i++;
+                }
+            }
 
             if (result.getGoalsTeamOne() > result.getGoalsTeamTwo()){
                 team1.setVictories(team1.getVictories() + 1);
