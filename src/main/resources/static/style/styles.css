@@ -1,9 +1,16 @@
+.title{
+  text-align: center;
+}
+
+.container {
+  text-align: center;
+}
+
 /* CSS styles for the navbar */
 /*.navbar {*/
 /*  background-color: #333;*/
 /*  overflow: hidden;*/
 /*}*/
-
 .navbar {
   position: sticky;
   margin: 0;

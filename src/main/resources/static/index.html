@@ -6,13 +6,38 @@
     <link rel="stylesheet" href="style/styles.css">
 </head>
 <body onload="getData()" topmargin="0" leftmargin="0" rightmargin="0">
-
     <div class="navbar">
         <a class="currentPage" href="index.html">Home</a>
         <a href="teamsPage.html">Teams</a>
         <a href="playersPage.html">Players</a>
         <a href="gamesPage.html">Games</a>
         <a href="stadiumsPage.html">Stadiums</a>
+    </div>
+
+    <div class="content">
+        <div class="container">
+            <h1 class="title">Best teams</h1>
+            <table id="teamsTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Victories</th>
+                    <th>Draws</th>
+                    <th>Defeats</th>
+                    <th>Points</th>
+                </tr>
+            </table>
+        </div>
+        <div class="container">
+            <h1 class="title">Best players</h1>
+            <table id="playersTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Goals scored</th>
+                </tr>
+            </table>
+        </div>
+
     </div>
 
     <script src="controller/homePageController.js"></script>
