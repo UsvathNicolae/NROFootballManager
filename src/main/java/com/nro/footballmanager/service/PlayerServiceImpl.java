@@ -16,8 +16,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
+
     @Autowired
-    private TeamRepository teamRepository;
+    private TeamServiceImpl teamService;
 
     @Override
     public Player savePlayer(Player player){
@@ -33,7 +34,7 @@ public class PlayerServiceImpl implements PlayerService {
     public Player updatePlayer(Long playerId, PlayerDTO playerDTO){
         Player player = PlayerDTO.toEntity(playerDTO);
         player.setId(playerId);
-        player.setTeam(teamRepository.findById(playerDTO.getTeamId()).get());
+        player.setTeam(teamService.getById(playerDTO.getTeamId()).get());
         return playerRepository.save(player);
     }
 

@@ -1,7 +1,9 @@
 package com.nro.footballmanager.service;
 
+import com.nro.footballmanager.entity.Player;
 import com.nro.footballmanager.entity.Team;
 import com.nro.footballmanager.entity.dto.TeamDTO;
+import com.nro.footballmanager.repository.PlayerRepository;
 import com.nro.footballmanager.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

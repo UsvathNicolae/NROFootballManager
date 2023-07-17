@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -28,6 +30,7 @@ public class Player {
     private RoleEnum role;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Team team;
 }
