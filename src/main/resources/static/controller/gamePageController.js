@@ -170,10 +170,10 @@ async function addGame(){
             team1: allTeams.find(team => team.id == team1Input.value),
             team2: allTeams.find(team => team.id == team2Input.value),
             datetime: dateInput.value + 'T' + hourInput.value + ':00',
-            stadium: allTeams.find(stadium => stadium.id == stadiumInput.value),
+            stadium: allStadiums.find(stadium => stadium.id == stadiumInput.value),
             result:null
         };
-
+        console.log(stadiumInput.value)
         console.log(gameData)
 
         await fetch(gamesURL, {
@@ -262,10 +262,10 @@ async function editGame(id){
 
     if (error.hidden) {
         let gameData = {
-            team1: team1Input.value,
-            team2: team2Input.value,
+            team1_id: team1Input.value,
+            team2_id: team2Input.value,
             datetime: dateInput.value + 'T' + hourInput.value + ':00',
-            stadium: stadiumInput.value,
+            stadium_id: stadiumInput.value
         };
         console.log(gameData)
 

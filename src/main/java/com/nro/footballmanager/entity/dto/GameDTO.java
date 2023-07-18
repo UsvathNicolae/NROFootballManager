@@ -20,7 +20,7 @@ public class GameDTO {
 
    private LocalDateTime datetime;
 
-   private Long result_id;
+   //private Long result_id;
 
    public static GameDTO fromEntity(Game game) {
       GameDTO gameDTO = new GameDTO();
@@ -29,7 +29,7 @@ public class GameDTO {
       gameDTO.setTeam2_id(game.getTeam2().getId());
       gameDTO.setStadium_id(game.getStadium().getId());
       gameDTO.setDatetime(game.getDatetime());
-      gameDTO.setResult_id(game.getResult().getId());
+     // gameDTO.setResult_id(game.getResult().getId());
 
       return gameDTO;
    }
@@ -41,7 +41,7 @@ public class GameDTO {
       game.getTeam2().setId(gameDTO.getTeam2_id());
       game.getStadium().setId(gameDTO.getStadium_id());
       game.setDatetime(gameDTO.getDatetime());
-      game.getResult().setId(gameDTO.getResult_id());
+     // game.getResult().setId(gameDTO.getResult_id());
 
       return game;
    }

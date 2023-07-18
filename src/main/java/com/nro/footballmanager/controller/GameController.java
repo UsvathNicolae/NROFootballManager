@@ -33,6 +33,7 @@ public class GameController {
         if (gameService.getById(gameId).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        System.out.println(gameDTO.getTeam1_id());
         return new ResponseEntity<>(GameDTO.fromEntity(gameService.updateGame(gameId,gameDTO)), HttpStatus.OK);
     }
 
