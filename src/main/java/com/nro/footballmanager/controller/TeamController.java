@@ -29,6 +29,11 @@ public class TeamController {
         return new ResponseEntity<>(teamService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/top/{number}")
+    public ResponseEntity<List<Team>> findTopTeams(@PathVariable("number") int number) {
+        return new ResponseEntity<>(teamService.findTopNTeams(number), HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<TeamDTO> updateTeam(@RequestBody TeamDTO teamDTO, @PathVariable("id") Long teamId) {
         if (teamService.getById(teamId).isEmpty()) {

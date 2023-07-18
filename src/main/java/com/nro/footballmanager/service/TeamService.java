@@ -10,6 +10,8 @@ public interface TeamService {
 
     List<Team> findAll();
 
+    List<Team> findTopNTeams(int number);
+
     Optional<Team> getById(Long teamId);
     Team saveTeam(Team team);
 

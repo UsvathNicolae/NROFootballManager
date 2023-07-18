@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -27,7 +28,15 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<Player> findAll(){
-        return playerRepository.findAll();
+        List<Player> players = playerRepository.findAll();
+        players.sort((player1, player2) ->  player2.getGoalsScored() - player1.getGoalsScored());
+        return players;
+    }
+
+    @Override
+    public List<Player> findTopNPlayers(int number){
+        List<Player> players = findAll();
+        return players.stream().limit(number).collect(Collectors.toList());
     }
 
     @Override

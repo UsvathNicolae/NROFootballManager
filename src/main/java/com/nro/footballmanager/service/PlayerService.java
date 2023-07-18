@@ -10,6 +10,8 @@ public interface PlayerService {
 
     List<Player> findAll();
 
+    List<Player> findTopNPlayers(int number);
+
     Optional<Player> getById(Long playerId);
 
     Player updatePlayer(Long playerId, PlayerDTO playerDTO);

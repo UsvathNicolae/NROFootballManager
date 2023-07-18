@@ -4,16 +4,12 @@ let allPlayers;
 let allTeams;
 
 async function getData(){
-    await fetch(playersURL,{
+    await fetch(playersURL + "top/" + 5,{
         method: "GET"
     })
         .then((response) => response.json())
         .then((json) => {
-            json.sort(function(a, b){
-                return b.goalsScored - a.goalsScored;
-            });
             allPlayers = json;
-            json.slice(0,4);
             let table = document.getElementById('playersTable');
             json.forEach(function (object) {
                 let rowNo = table.rows.length;
@@ -26,17 +22,12 @@ async function getData(){
             })
         });
 
-    await fetch(teamsURL, {
+    await fetch(teamsURL + "top/" + 5, {
         method:"GET"
     })
         .then((response) => response.json())
         .then((json) => {
-            json.sort(function(a, b){
-                return (b.victories * 3 + b.draws) - (a.victories * 3 + a.draws);
-            });
             allTeams = json;
-            json.slice(0,4);
-            console.log(json)
             let table = document.getElementById('teamsTable');
             json.forEach(function (object) {
                 let rowNo = table.rows.length ;
@@ -50,6 +41,4 @@ async function getData(){
                 table.appendChild(tr);
             })
         });
-    console.log(allPlayers)
-    console.log(allTeams)
 }

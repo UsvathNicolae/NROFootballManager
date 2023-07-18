@@ -24,6 +24,12 @@ public class PlayerController {
         return new ResponseEntity<>(players, HttpStatus.OK);
     }
 
+    @GetMapping("/top/{number}")
+    public ResponseEntity<List<Player>> findTopPlayers(@PathVariable("number") int number) {
+        List<Player> players = playerService.findTopNPlayers(number);
+        return new ResponseEntity<>(players, HttpStatus.OK);
+    }
+
     @PostMapping("/")
     public ResponseEntity<Player> savePlayer(@Validated @RequestBody Player player) {
         return new ResponseEntity<>(playerService.savePlayer(player), HttpStatus.CREATED);
