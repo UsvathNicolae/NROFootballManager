@@ -51,13 +51,13 @@ public class GameServiceImpl implements GameService{
     @Override
     public Game updateGame(Long gameId, GameDTO gameDTO){
 //        Game game = GameDTO.toEntity(gameDTO);
-        Game game = new Game();
-        game.setId(gameId);
+
+        Game game = getById(gameId).get();
         game.setTeam1(teamService.getById(gameDTO.getTeam1_id()).get());
         game.setTeam2(teamService.getById(gameDTO.getTeam2_id()).get());
         game.setStadium(stadiumService.getById(gameDTO.getStadium_id()).get());
         game.setDatetime(gameDTO.getDatetime());
-//        game.setResult(resultService.getById(gameDTO.getResult_id()).get());
+
         return gameRepository.save(game);
     }
 
