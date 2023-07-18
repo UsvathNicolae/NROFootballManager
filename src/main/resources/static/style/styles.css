@@ -40,7 +40,7 @@
 
 .currentPage {
   background-color: #dddddd;
-  color: #000000;
+  color: #000000 !important;
 }
 
 
