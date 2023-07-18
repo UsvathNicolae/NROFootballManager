@@ -216,11 +216,10 @@ function openEdit(id, position){
     addbtn.innerHTML = "Edit";
     addbtn.setAttribute("onclick", "editGame(" + id + ")");
     document.getElementById("modalHeaderText").innerHTML = "Edit game";
-
     document.getElementById("team1").value = allGames[position].team1.id;
     document.getElementById("team2").value = allGames[position].team2.id;
-    document.getElementById("date").value = allGames[position].dateTime;
-    document.getElementById("hour").value = allGames[position].dateTime;
+    document.getElementById("date").value = allGames[position].datetime.substring(0, 10);
+    document.getElementById("hour").value = allGames[position].datetime.substring(11, 19);
     document.getElementById("stadium").value = allGames[position].stadium.id;
     document.getElementById("errorMessage").hidden = true;
 }
@@ -264,7 +263,7 @@ async function editGame(id){
         let gameData = {
             team1_id: team1Input.value,
             team2_id: team2Input.value,
-            datetime: dateInput.value + 'T' + hourInput.value + ':00',
+            datetime: (dateInput.value + 'T' + hourInput.value + ':00').substring(0,19),
             stadium_id: stadiumInput.value
         };
         console.log(gameData)
