@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="style/styles.css">
 </head>
-<body onload="getGames()" topmargin="0" leftmargin="0" rightmargin="0">
+<body onload="getPageData()" topmargin="0" leftmargin="0" rightmargin="0" style="background-image: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/game.jpeg')">
 <div class="navbar">
     <a href="index.html">Home</a>
     <a href="teamsPage.html">Teams</a>
@@ -14,8 +14,6 @@
     <a class="currentPage" href="gamesPage.html">Games</a>
     <a href="stadiumsPage.html">Stadiums</a>
 </div>
-<div class="content">
-    <button class="button" id="createButton">Create</button>
     <div id="addGameModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
@@ -52,6 +50,8 @@
                         <select id="stadium" name="stadium">
                         </select>
                     </div>
+                    <br>
+                    <h4 class="errorMessage" id="errorMessage">Error message</h4>
                 </form>
             </div>
             <div class="modal-footer">
@@ -59,20 +59,25 @@
             </div>
         </div>
     </div>
-    <table id="gamesTable">
-        <tr>
-            <th>#</th>
-            <th>Team 1</th>
-            <th>Team 2</th>
-            <th>Date</th>
-            <th>Hour</th>
-            <th>Stadium</th>
-            <th>Goals Team 1</th>
-            <th>Goals Team 2</th>
-            <th>Actions</th>
-        </tr>
-    </table>
-</div>
+    <div>
+        <button class="button" id="createButton">Create</button>
+        <div class="table-container">
+            <table id="gamesTable">
+                <tr>
+                    <th>#</th>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Date</th>
+                    <th>Hour</th>
+                    <th>Stadium</th>
+                    <th>Goals Team 1</th>
+                    <th>Goals Team 2</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 <script src="controller/gamePageController.js"></script>
 </body>
 </html>

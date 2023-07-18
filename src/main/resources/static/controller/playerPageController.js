@@ -23,8 +23,10 @@ btn.onclick = function() {
 
     document.getElementById("playerName").value = "";
     document.getElementById("goalsScored").value = 0;
+    document.getElementById("goalsScored_form").hidden = true;
     document.getElementById("role").value = "";
     document.getElementById("teamName").value = "";
+    document.getElementById("errorMessage").hidden = true;
 
     modal.style.display = "block";
 }
@@ -79,31 +81,52 @@ async function addPlayer(){
     let goalsScoredInput = document.getElementById("goalsScored");
     let roleInput = document.getElementById("role");
     let teamInput = document.getElementById("teamName")
-    const playerData = {
-        name: nameInput.value,
-        goalsScored: parseInt(goalsScoredInput.value),
-        role: roleInput.value,
-        team: (teamInput.value == null? null :  allTeams.find(function(obj) {
-            if(obj.id == teamInput.value) return obj;
-        }))
-    };
+    let error = document.getElementById("errorMessage")
+    error.hidden = true;
 
-    await fetch(playersURL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(playerData)
-    })
-        .then((response) => {
-            console.log(response);
+    if(nameInput.value == null || nameInput.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Name field cannot be empty!";
+    }else {
+        if(roleInput.value == null || roleInput.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Role field cannot be empty!";
+        }else {
+            if(teamInput.value == null || teamInput.value.trim() === ""){
+                error.hidden = false;
+                error.innerHTML = "Team field cannot be empty!";
+            }
+        }
+
+    }
+
+    if(error.hidden) {
+        const playerData = {
+            name: nameInput.value,
+            goalsScored: parseInt(goalsScoredInput.value),
+            role: roleInput.value,
+            team: (teamInput.value == null? null :  allTeams.find(function(obj) {
+                if(obj.id == teamInput.value) return obj;
+            }))
+        };
+
+        await fetch(playersURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(playerData)
         })
-        .catch((error) => {
-            console.error(error);
-        });
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-    modal.style.display = "none";
-    await refreshTable()
+        modal.style.display = "none";
+        await refreshTable()
+    }
 }
 
 // delete a player
@@ -126,7 +149,10 @@ function openEdit( id, position){
 
     document.getElementById("playerName").value = allPlayers[position].name;
     document.getElementById("goalsScored").value = allPlayers[position].goalsScored;
+    document.getElementById("goalsScored_form").hidden = false;
     document.getElementById("role").value = allPlayers[position].role;
+    document.getElementById("errorMessage").hidden = true;
+
     allPlayers[position].team != null?
         document.getElementById("teamName").value = allPlayers[position].team.id
         :
@@ -137,25 +163,50 @@ async function editPlayer( id){
     let nameInput = document.getElementById("playerName");
     let goalsScoredInput = document.getElementById("goalsScored");
     let roleInput = document.getElementById("role");
-    let teamInput = document.getElementById("teamName")
+    let teamInput = document.getElementById("teamName");
+    let error = document.getElementById("errorMessage");
+    error.hidden = true;
 
-    const playerData = {
-        name: nameInput.value,
-        goalsScored: parseInt(goalsScoredInput.value),
-        role: roleInput.value,
-        teamId: teamInput.value
-    };
-    console.log(playerData)
+    if(nameInput.value == null || nameInput.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Name field cannot be empty!";
+    }else {
+        if(goalsScoredInput.value == null || goalsScoredInput.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Goals scored field cannot be empty!";
+        }else{
+            if(roleInput.value == null || roleInput.value.trim() === ""){
+                error.hidden = false;
+                error.innerHTML = "Role field cannot be empty!";
+            }else {
+                if(teamInput.value == null || teamInput.value.trim() === ""){
+                    error.hidden = false;
+                    error.innerHTML = "Team field cannot be empty!";
+                }
+            }
+        }
+    }
 
-    await fetch(playersURL + id, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(playerData)
-    })
-    modal.style.display = "none";
-    await refreshTable()
+    if(error.hidden){
+        const playerData = {
+            name: nameInput.value,
+            goalsScored: parseInt(goalsScoredInput.value),
+            role: roleInput.value,
+            teamId: teamInput.value
+        };
+        console.log(playerData)
+
+        await fetch(playersURL + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(playerData)
+        })
+        modal.style.display = "none";
+        await refreshTable()
+    }
+
 }
 
 async function refreshTable(){

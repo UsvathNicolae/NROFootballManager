@@ -5,7 +5,7 @@
     <title>NRO football manager</title>
     <link rel="stylesheet" href="style/styles.css">
 </head>
-<body onload="getData()" topmargin="0" leftmargin="0" rightmargin="0">
+<body onload="getData()" topmargin="0" leftmargin="0" rightmargin="0" style="background-image: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('images/homePage.jpg');" >
     <div class="navbar">
         <a class="currentPage" href="index.html">Home</a>
         <a href="teamsPage.html">Teams</a>
@@ -14,8 +14,7 @@
         <a href="stadiumsPage.html">Stadiums</a>
     </div>
 
-    <div class="content">
-        <div class="container">
+    <div>
             <h1 class="title">Top 5 teams</h1>
             <table id="teamsTable">
                 <tr>
@@ -27,8 +26,8 @@
                     <th>Points</th>
                 </tr>
             </table>
-        </div>
-        <div class="container">
+    </div>
+        <div style="overflow-x:auto;">
             <h1 class="title">Top 5 players</h1>
             <table id="playersTable">
                 <tr>

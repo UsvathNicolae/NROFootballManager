@@ -20,10 +20,16 @@ btn.onclick = function() {
 
     document.getElementById("name").value = "";
     document.getElementById("victories").value = 0;
+    document.getElementById("victories_form").hidden = true;
     document.getElementById("draws").value = 0;
+    document.getElementById("draws_form").hidden = true;
     document.getElementById("defeats").value = 0;
+    document.getElementById("defeats_form").hidden = true;
     document.getElementById("goalsScored").value = 0;
+    document.getElementById("goalsScored_form").hidden = true;
     document.getElementById("goalsReceived").value = 0;
+    document.getElementById("goalsReceived_form").hidden = true;
+    document.getElementById("errorMessage").hidden = true;
 
     modal.style.display = "block";
 }
@@ -73,38 +79,44 @@ async function getTeams(){
 //add a team
 async function addTeam(){
     let nameInput = document.getElementById("name");
-    let victoriesInput = document.getElementById("victories");
-    let drawsInput = document.getElementById("draws");
-    let defeatsInput = document.getElementById("defeats");
-    let goalsScoredInput = document.getElementById("goalsScored");
-    let goalsReceivedInput = document.getElementById("goalsReceived");
+    let error = document.getElementById("errorMessage")
 
-    const teamData = {
-        name: nameInput.value,
-        victories: parseInt(victoriesInput.value),
-        draws: parseInt(drawsInput.value),
-        defeats: parseInt(defeatsInput.value),
-        goalsScored: parseInt(goalsScoredInput.value),
-        goalsReceived: parseInt(goalsReceivedInput.value)
-    };
+    error.hidden = true;
 
-    await fetch(teamsURL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(teamData)
-    })
-    .then((response) => {
-        console.log(response);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+    if(nameInput.value == null || nameInput.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Name field cannot be empty!";
+    }
+
+    if (error.hidden){
+        const teamData = {
+            name: nameInput.value,
+            victories: 0,
+            draws: 0,
+            defeats: 0,
+            goalsScored: 0,
+            goalsReceived: 0
+        };
+
+        await fetch(teamsURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(teamData)
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
 
-    modal.style.display = "none";
-    await refreshTable()
+        modal.style.display = "none";
+        await refreshTable()
+    }
+
 }
 
 // delete a team
@@ -125,6 +137,14 @@ function openEdit( id, position){
     addbtn.setAttribute("onclick", "editTeam(" + id + ")");
     document.getElementById("modalHeaderText").innerHTML = "Edit team";
 
+
+    document.getElementById("victories_form").hidden = false;
+    document.getElementById("draws_form").hidden = false;
+    document.getElementById("defeats_form").hidden = false;
+    document.getElementById("goalsScored_form").hidden = false;
+    document.getElementById("goalsReceived_form").hidden = false;
+    document.getElementById("errorMessage").hidden = true;
+
     document.getElementById("name").value = allTeams[position].name;
     document.getElementById("victories").value = allTeams[position].victories;
     document.getElementById("draws").value = allTeams[position].draws;
@@ -141,26 +161,59 @@ async function editTeam(id){
     let defeatsInput = document.getElementById("defeats");
     let goalsScoredInput = document.getElementById("goalsScored");
     let goalsReceivedInput = document.getElementById("goalsReceived");
+    let error = document.getElementById("errorMessage")
+    error.hidden = true;
 
-    let teamData = {
-        name: nameInput.value,
-        victories: parseInt(victoriesInput.value),
-        draws: parseInt(drawsInput.value),
-        defeats: parseInt(defeatsInput.value),
-        goalsScored: parseInt(goalsScoredInput.value),
-        goalsReceived: parseInt(goalsReceivedInput.value)
-    };
+    if(nameInput.value == null || nameInput.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Name field cannot be empty!";
+    }else{
+        if(victoriesInput.value == null || victoriesInput.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Victories field cannot be empty!";
+        }else{
+            if(drawsInput.value == null || drawsInput.value.trim() === ""){
+                error.hidden = false;
+                error.innerHTML = "Draws field cannot be empty!";
+            }else{
+                if(defeatsInput.value == null || defeatsInput.value.trim() === ""){
+                    error.hidden = false;
+                    error.innerHTML = "Defeats field cannot be empty!";
+                }else{
+                    if(goalsScoredInput.value == null || goalsScoredInput.value.trim() === ""){
+                        error.hidden = false;
+                        error.innerHTML = "Goals scored field cannot be empty!";
+                    }else{
+                        if(goalsReceivedInput.value == null || goalsReceivedInput.value.trim() === ""){
+                            error.hidden = false;
+                            error.innerHTML = "Goals taken field cannot be empty!";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    await fetch(teamsURL + id, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(teamData)
-    })
-    modal.style.display = "none";
-    await refreshTable()
+    if (error.hidden){
+        let teamData = {
+            name: nameInput.value,
+            victories: parseInt(victoriesInput.value),
+            draws: parseInt(drawsInput.value),
+            defeats: parseInt(defeatsInput.value),
+            goalsScored: parseInt(goalsScoredInput.value),
+            goalsReceived: parseInt(goalsReceivedInput.value)
+        };
 
+        await fetch(teamsURL + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(teamData)
+        })
+        modal.style.display = "none";
+        await refreshTable()
+    }
 }
 
 async function refreshTable(){

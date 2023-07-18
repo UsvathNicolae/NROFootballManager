@@ -21,6 +21,8 @@ btn.onclick = function() {
     document.getElementById("stadiumName").value = "";
     document.getElementById("stadiumLocation").value = "";
 
+    document.getElementById("errorMessage").hidden = true;
+
     modal.style.display = "block";
 }
 
@@ -68,27 +70,43 @@ async function addStadium(){
     let nameInput = document.getElementById("stadiumName");
     let locationInput = document.getElementById("stadiumLocation");
 
-    const stadiumData = {
-        name: nameInput.value,
-        location: locationInput.value
-    };
+    let error = document.getElementById("errorMessage")
+    error.hidden = true;
 
-    await fetch(stadiumsURL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(stadiumData)
-    })
-        .then((response) => {
-            console.log(response);
+    if(nameInput.value == null || nameInput.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Name field cannot be empty!";
+    }else{
+        if(locationInput.value == null || locationInput.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Location field cannot be empty!";
+        }
+    }
+
+    if(error.hidden){
+        const stadiumData = {
+            name: nameInput.value,
+            location: locationInput.value
+        };
+
+        await fetch(stadiumsURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(stadiumData)
         })
-        .catch((error) => {
-            console.error(error);
-        });
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-    modal.style.display = "none";
-    await refreshTable();
+        modal.style.display = "none";
+        await refreshTable();
+    }
+
 }
 
 // Delete a stadium
@@ -114,28 +132,44 @@ function openEdit(id, position){
 
     document.getElementById("stadiumName").value = allStadiums[position].name;
     document.getElementById("stadiumLocation").value = allStadiums[position].location;
+    document.getElementById("errorMessage").hidden = true;
 }
 
 // Edit a stadium
 async function editStadium(id){
     let nameInput = document.getElementById("stadiumName");
     let locationInput = document.getElementById("stadiumLocation");
+    let error = document.getElementById("errorMessage")
+    error.hidden = true;
 
-    let stadiumData = {
-        name: nameInput.value,
-        location: locationInput.value
-    };
+    if(nameInput.value == null || nameInput.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Name field cannot be empty!";
+    }else{
+        if(locationInput.value == null || locationInput.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Location field cannot be empty!";
+        }
+    }
 
-    await fetch(stadiumsURL + id, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(stadiumData)
-    });
+    if(error.hidden){
+        let stadiumData = {
+            name: nameInput.value,
+            location: locationInput.value
+        };
 
-    modal.style.display = "none";
-    await refreshTable();
+        await fetch(stadiumsURL + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(stadiumData)
+        });
+
+        modal.style.display = "none";
+        await refreshTable();
+    }
+
 }
 
 // Refresh the table after CRUD operations

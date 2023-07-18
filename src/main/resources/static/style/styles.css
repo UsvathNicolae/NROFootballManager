@@ -42,11 +42,6 @@
   color: #000000;
 }
 
-.content {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 5px;
-}
 
 /* The Modal (background) */
 .modal {
@@ -107,23 +102,38 @@ input[type="number"] {
   border: 1px solid #ccc;
 }
 
-
-/* Table Styles */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
 th, td {
   padding: 10px;
-  text-align: left;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+tr:nth-child(odd) {
+  background-color: #FFFFFF;
+}
 
+td{
+  padding-left: 50px;
+  padding-right: 50px;
+}
 
+tr:hover {
+  background-color: #808080;
+}
+
+/* Table Styles */
+table {
+  /*width: 70%;*/
+  border-collapse: collapse;
+  border: 1px solid;
+  display: inline-block;
+  /*margin: 0 auto; !* Use margin: 0 auto; to center the table *!*/
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* Button Styles */
 .button {
@@ -162,6 +172,9 @@ tr:nth-child(even) {
   background-color: #DC352F;
 }
 
+.errorMessage{
+  color: red;
+}
 
 /* Close Button Styles */
 .close {
@@ -176,4 +189,25 @@ tr:nth-child(even) {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  /*Backgroung image*/
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  /*Items on the page*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-container {
+  /*width: 80%; !* Adjust this value to set the width of the table container *!*/
 }

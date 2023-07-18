@@ -30,6 +30,7 @@ btn.onclick = function() {
     document.getElementById("date").value = "";
     document.getElementById("hour").value = "";
     document.getElementById("stadium").value = "";
+    document.getElementById("errorMessage").hidden = true;
 
     modal.style.display = "block";
 }
@@ -46,37 +47,7 @@ window.onclick = function(event) {
     }
 }
 
-// Populating the table
-async function getGames(){
-    await fetch(gamesURL, {
-        method: "GET"
-    })
-        .then((response) => response.json())
-        .then((json) => {
-            allGames = json;
-            console.log(allGames)
-            let table = document.getElementById('gamesTable');
-
-            json.forEach(function (object) {
-                let rowNo = table.rows.length - 1;
-                let tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + (rowNo + 1) + '</td>' +
-                    '<td>' + object.team1.name + '</td>' +
-                    '<td>' + object.team2.name + '</td>' +
-                    '<td>' + object.datetime.substring(0, 10) + '</td>' +
-                    '<td>' + object.datetime.substring(11, 19) + '</td>' +
-                    '<td>' + object.stadium.name + '</td>' +
-                    '<td>' + (object.result!= null ? object.result.goalsTeamOne : "-")  + '</td>' +
-                    '<td>' + (object.result!= null ? object.result.goalsTeamTwo : "-")  + '</td>' +
-                    '<td>' +
-                    '<button class="button" onclick="openEdit(' + object.id + ',' + rowNo + ')">Edit</button>' +
-                    '<button class="buttonRed" onclick="deleteGame(' + object.id + ')">Delete</button>' +
-                    (object.result == null ? '<button class="button" onclick="playGame(' + object.id + ')">Play</button>' : "") + '</td>';
-
-                table.appendChild(tr);
-            })
-        });
-
+async function getPageData(){
     await fetch(teamsURL, {
         method:"GET"
     })
@@ -106,6 +77,7 @@ async function getGames(){
     })
         .then((response) => response.json())
         .then((json) => {
+            console.log(json)
             allStadiums = json;
             let selectStadium = document.getElementById("stadium");
             json.forEach(function (object){
@@ -123,6 +95,39 @@ async function getGames(){
     //     .then((json) => {
     //         allResults = json;
     //     })
+    await getGames();
+}
+
+// Populating the table
+async function getGames(){
+    await fetch(gamesURL, {
+        method: "GET"
+    })
+        .then((response) => response.json())
+        .then((json) => {
+            allGames = json;
+            console.log(allGames)
+            let table = document.getElementById('gamesTable');
+
+            json.forEach(function (object) {
+                let rowNo = table.rows.length - 1;
+                let tr = document.createElement('tr');
+                tr.innerHTML = '<td>' + (rowNo + 1) + '</td>' +
+                    '<td>' + object.team1.name + '</td>' +
+                    '<td>' + object.team2.name + '</td>' +
+                    '<td>' + object.datetime.substring(0, 10) + '</td>' +
+                    '<td>' + object.datetime.substring(11, 19) + '</td>' +
+                    '<td>' + object.stadium.name + '</td>' +
+                    '<td>' + (object.result!= null ? object.result.goalsTeamOne : "-")  + '</td>' +
+                    '<td>' + (object.result!= null ? object.result.goalsTeamTwo : "-")  + '</td>' +
+                    '<td>' +
+                    (object.result == null ? '<button class="button" onclick="playGame(' + object.id + ')">Play</button>' : "") +
+                    '<button class="button" onclick="openEdit(' + object.id + ',' + rowNo + ')">Edit</button>' +
+                    '<button class="buttonRed" onclick="deleteGame(' + object.id + ')">Delete</button>' + '</td>';
+
+                table.appendChild(tr);
+            })
+        });
 }
 
 // Add a game
@@ -132,33 +137,63 @@ async function addGame(){
     let dateInput = document.getElementById("date");
     let hourInput = document.getElementById("hour");
     let stadiumInput = document.getElementById("stadium");
+    let error = document.getElementById("errorMessage")
+    error.hidden = true;
 
-    const gameData = {
-        team1: allTeams.find(team => team.id == team1Input.value),
-        team2: allTeams.find(team => team.id == team2Input.value),
-        datetime: dateInput.value + 'T' + hourInput.value + ':00',
-        stadium: allTeams.find(stadium => stadium.id == stadiumInput.value),
-        result:null
-    };
+    if(team1Input.value == null || team1Input.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Team one field cannot be empty!";
+    }else {
+        if(team2Input.value == null || team2Input.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Team two field cannot be empty!";
+        }else {
+            if(dateInput.value == null || dateInput.value.trim() === ""){
+                error.hidden = false;
+                error.innerHTML = "Date field cannot be empty!";
+            }else {
+                if(hourInput.value == null || hourInput.value.trim() === ""){
+                    error.hidden = false;
+                    error.innerHTML = "Hour field cannot be empty!";
+                }else {
+                    if(stadiumInput.value == null || stadiumInput.value.trim() === ""){
+                        error.hidden = false;
+                        error.innerHTML = "Stadium field cannot be empty!";
+                    }
+                }
+            }
+        }
+    }
 
-    console.log(gameData)
+    if (error.hidden){
+        const gameData = {
+            team1: allTeams.find(team => team.id == team1Input.value),
+            team2: allTeams.find(team => team.id == team2Input.value),
+            datetime: dateInput.value + 'T' + hourInput.value + ':00',
+            stadium: allTeams.find(stadium => stadium.id == stadiumInput.value),
+            result:null
+        };
 
-    await fetch(gamesURL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(gameData)
-    })
-        .then((response) => {
-            console.log(response);
+        console.log(gameData)
+
+        await fetch(gamesURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(gameData)
         })
-        .catch((error) => {
-            console.error(error);
-        });
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-    modal.style.display = "none";
-    await refreshTable();
+        modal.style.display = "none";
+        await refreshTable();
+    }
+
 }
 
 // Delete a game
@@ -187,6 +222,7 @@ function openEdit(id, position){
     document.getElementById("date").value = allGames[position].dateTime;
     document.getElementById("hour").value = allGames[position].dateTime;
     document.getElementById("stadium").value = allGames[position].stadium.id;
+    document.getElementById("errorMessage").hidden = true;
 }
 
 // Edit a game
@@ -196,25 +232,54 @@ async function editGame(id){
     let dateInput = document.getElementById("date");
     let hourInput = document.getElementById("hour");
     let stadiumInput = document.getElementById("stadium");
+    let error = document.getElementById("errorMessage")
+    error.hidden = true;
 
-    let gameData = {
-        team1: team1Input.value,
-        team2: team2Input.value,
-        datetime:dateInput.value + 'T' + hourInput.value + ':00',
-        stadium: stadiumInput.value,
-    };
-    console.log(gameData)
+    if(team1Input.value == null || team1Input.value.trim() === ""){
+        error.hidden = false;
+        error.innerHTML = "Team one field cannot be empty!";
+    }else {
+        if(team2Input.value == null || team2Input.value.trim() === ""){
+            error.hidden = false;
+            error.innerHTML = "Team two field cannot be empty!";
+        }else {
+            if(dateInput.value == null || dateInput.value.trim() === ""){
+                error.hidden = false;
+                error.innerHTML = "Date field cannot be empty!";
+            }else {
+                if(hourInput.value == null || hourInput.value.trim() === ""){
+                    error.hidden = false;
+                    error.innerHTML = "Hour field cannot be empty!";
+                }else {
+                    if(stadiumInput.value == null || stadiumInput.value.trim() === ""){
+                        error.hidden = false;
+                        error.innerHTML = "Stadium field cannot be empty!";
+                    }
+                }
+            }
+        }
+    }
 
-    await fetch(gamesURL + id, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(gameData)
-    });
+    if (error.hidden) {
+        let gameData = {
+            team1: team1Input.value,
+            team2: team2Input.value,
+            datetime: dateInput.value + 'T' + hourInput.value + ':00',
+            stadium: stadiumInput.value,
+        };
+        console.log(gameData)
 
-    modal.style.display = "none";
-    await refreshTable();
+        await fetch(gamesURL + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(gameData)
+        });
+
+        modal.style.display = "none";
+        await refreshTable();
+    }
 }
 
 async function playGame(id) {
@@ -229,6 +294,7 @@ async function playGame(id) {
 // Refresh the table after CRUD operations
 async function refreshTable(){
     let table = document.getElementById('gamesTable');
+
 
     while(table.rows.length !== 1){
         document.getElementById('gamesTable').deleteRow(1);

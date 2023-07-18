@@ -6,16 +6,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="style/styles.css">
 </head>
-<body onload="getPlayers()" topmargin="0" leftmargin="0" rightmargin="0">
-<div class="navbar">
-    <a href="index.html">Home</a>
-    <a href="teamsPage.html">Teams</a>
-    <a class="currentPage" href="playersPage.html">Players</a>
-    <a href="gamesPage.html">Games</a>
-    <a href="stadiumsPage.html">Stadiums</a>
-</div>
-<div class="content">
-    <button class="button" id="createButton">Create</button>
+<body onload="getPlayers()" topmargin="0" leftmargin="0" rightmargin="0" style="background-image: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/players.jpg')">
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="teamsPage.html">Teams</a>
+        <a class="currentPage" href="playersPage.html">Players</a>
+        <a href="gamesPage.html">Games</a>
+        <a href="stadiumsPage.html">Stadiums</a>
+    </div>
+
     <div id="addPlayerModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
@@ -30,7 +29,7 @@
                         <input type="text" id="playerName" name="playerName">
                     </div>
                     <br>
-                    <div class="form-group">
+                    <div class="form-group" id="goalsScored_form">
                         <label for="goalsScored">Goals scored:</label>
                         <input type="number" id="goalsScored" name="goalsScored" value="0">
                     </div>
@@ -48,9 +47,10 @@
                     <div class="form-group">
                         <label for="teamName">Team:</label>
                         <select id="teamName" name="team">
-                            <option value= null>No team</option>
                         </select>
                     </div>
+                    <br>
+                    <h4 class="errorMessage" id="errorMessage">Error message</h4>
                 </form>
             </div>
             <div class="modal-footer">
@@ -58,17 +58,22 @@
             </div>
         </div>
     </div>
-    <table id="playersTable">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Goals scored</th>
-            <th>Role</th>
-            <th>Team</th>
-            <th>Actions</th>
-        </tr>
-    </table>
-</div>
+
+    <div>
+        <button class="button" id="createButton">Create</button>
+        <div class="table-container">
+            <table id="playersTable">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Goals scored</th>
+                    <th>Role</th>
+                    <th>Team</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
+        </div>
+    </div>
 <script src="controller/playerPageController.js"></script>
 </body>
 </html>

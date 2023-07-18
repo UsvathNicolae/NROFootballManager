@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="style/styles.css">
 </head>
-<body onload="getStadiums()" topmargin="0" leftmargin="0" rightmargin="0">
+<body onload="getStadiums()" topmargin="0" leftmargin="0" rightmargin="0" style="background-image: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/stadium.jpeg')">
 <div class="navbar">
     <a href="index.html">Home</a>
     <a href="teamsPage.html">Teams</a>
@@ -14,8 +14,6 @@
     <a href="gamesPage.html">Games</a>
     <a class="currentPage" href="stadiumsPage.html">Stadiums</a>
 </div>
-<div class="content">
-    <button class="button" id="createButton">Create</button>
     <div id="addStadiumModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
@@ -34,6 +32,8 @@
                         <label for="stadiumLocation">Location:</label>
                         <input type="text" id="stadiumLocation" name="stadiumLocation">
                     </div>
+                    <br>
+                    <h4 class="errorMessage" id="errorMessage">Error message</h4>
                 </form>
             </div>
             <div class="modal-footer">
@@ -41,15 +41,20 @@
             </div>
         </div>
     </div>
-    <table id="stadiumsTable">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Actions</th>
-        </tr>
-    </table>
-</div>
+
+    <div class="content">
+        <button class="button" id="createButton">Create</button>
+        <div class="table-container">
+            <table id="stadiumsTable">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
+        </div>
+    </div>
 <script src="controller/stadiumPageController.js"></script>
 </body>
 </html>
